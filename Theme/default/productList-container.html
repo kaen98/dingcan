@@ -1,0 +1,29 @@
+{{each product as value i}}
+<div class="item {{if value.label == '推荐'}}large{{/if}}" label-cate="{{value.menu_id}}" label-id="{{value.id}}">
+    <div class="item-image" onclick="clickItemDetail('{{value.id}}')"><img src="{{imageUrl}}/blank.gif"
+            data-echo="{{uploadsUrl+value.savepath+value.savename}}" class="lazy"
+            style="width: 100%; margin-top: 0px; display: inline;background: #FFF url({{imageUrl}}/loading.gif) no-repeat center center;background-size: 30px;">
+        <div class="select-shadow">
+            <div class="select-inner"><img src="{{imageUrl}}/ico_select.png" alt="selected"><span>已选</span></div>
+        </div>
+    </div>
+    <div class="single-item-info">
+        <div class="item-title">{{value.name}}</div>
+        <div class="item-price-show">
+            <div class="item-price"><span class="hotspot">￥{{value.price}}</span></div>
+        </div>
+        {{if value.status == 1}}
+            {{if value.sku.length}}
+            <div class="item-amount" onclick="clickItemDetail('{{value.id}}')"><i
+                    class="ico ico-cart"></i></div>
+            {{else}}
+            <div class="item-amount" onclick="doCart(this,'{{value.id}}','{{value.name}}','{{value.price}}','')"><i
+                    class="ico ico-cart"></i></div>
+            {{/if}}
+        {{else if value.status == 0}}
+        <div class="item-amount"><span>已售罄</span></div>
+        {{/if}}
+
+    </div>
+</div>
+{{/each}}

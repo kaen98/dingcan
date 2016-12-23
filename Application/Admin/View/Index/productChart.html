@@ -1,0 +1,59 @@
+<section class="content-header">
+    <h1>
+        系统首页
+        <small></small>
+    </h1>
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="row">
+        <!-- /.col -->
+        <div class="col-md-12">
+            <div class="box box-default">
+                <div class="box-header with-border">
+                    <h3 class="box-title">商品SKU分析</h3>
+                    <!-- /.box-tools -->
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body no-padding">
+                    <div class="table-responsive" style="overflow-x: visible;">
+                        <table class="table table-bordered table-hover">
+                            <tbody>
+                            <tr>
+                                <th>
+                                    商品名称
+                                </th>
+                                <th>
+                                    浏览量
+                                </th>
+                                <th>
+                                    购买量
+                                </th>
+                                <th>
+                                    销售额
+                                </th>
+                                <th>
+                                    购买率
+                                </th>
+                            </tr>
+                            <volist name="skuList" id="list">
+                                <tr>
+                                    <td>{$list.product.name}【{$list.name}】</td>
+                                    <td>{$list.product.visiter}</td>
+                                    <td>{$list.sales}</td>
+                                    <td>{$list['sales'] * $list['price']}</td>
+                                    <td>{$list['sales'] / $list['product']['visiter'] * 100|round=2}%</td>
+                                </tr>
+                            </volist>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.mail-box-messages -->
+                </div>
+            </div>
+            <!-- /. box -->
+        </div>
+        <!-- /.col -->
+    </div>
+</section>

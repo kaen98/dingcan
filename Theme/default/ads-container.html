@@ -1,0 +1,10 @@
+<section class="m-component-promotion" id="list-section">
+    <ul class="list-unstyled" id="list-sale">
+        {{each ads as value i}}
+        <li><a onclick="clickItemDetail('{{value.remark}}')"><img class="lazy" src="{{imageUrl}}/blank.gif" data-echo="{{uploadsUrl+value.savepath+value.savename}}" style="display: inline; height: 137px;"></a></li>
+        {{/each}}
+    </ul>
+</section>
+<div style="padding-top:80px;">
+    <a href="javascript:void(0);" style="text-align: center;color: #949494;font-size: 12px;display: block;"></a>
+</div>

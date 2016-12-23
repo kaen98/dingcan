@@ -1,0 +1,29 @@
+<div class="header">
+    <div class="types types-flour">
+        <div id="swiper-container">
+            <div class="swiper-wrapper">
+                {{each menu as value i}}
+                <div class="menuItem swiper-slide" onclick="changeMenu(this,'{{value.id}}','');">{{value.name}}</div>
+                {{/each}}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="mainList" class="main">
+    <div id="items" class="items" style="margin-top: 52px;">
+        <!--通知栏-->
+        {{if config.notification}}
+            <div class="item large" id="notification">
+                {{config.notification}}
+            </div>
+        {{/if}}
+
+        {{include "./productList-container"}}
+    </div>
+</div>
+<div class="backToTop">
+    <div class="backToTop-inner" onclick="backToTop()">
+        <i class="ico ico-top"></i><span>回到顶部</span>
+    </div>
+</div>
