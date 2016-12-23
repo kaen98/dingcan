@@ -1,37 +1,57 @@
 <?php
 namespace Admin\Controller;
 
-class ShopController extends BaseController
-{
-    public function menu()
-    {
+class ShopController extends BaseController {
+
+    public function shop() {
+        $shops = M('shop')->select();
+        dump($shops);
+    }
+
+    public function addShop() {
+        $this->display();
+    }
+
+    public function doAddShop() {
+        try {
+            $add['name'] = I('name');
+            $id = M('name')->add($add);
+            if (!$id) {
+                throw new \Exception("添加餐厅错误", ErrorCode::ADD_FAILURE);
+            }
+            $this->success('添加成功', 'Admin/Shop/shop');
+        } catch (\Exception $e) {
+            $this->error($e->getMessage(), 'Admin/Shop/addShop');
+        }
+
+    }
+
+    public function menu() {
         $menu = D("Menu")->getList(array(), true);
         $this->assign("menu", $menu);
         $this->display();
     }
 
-    public function product()
-    {
+    public function product() {
 //      每页显示的记录数
         $num = 25;
         $p = I("get.page") ? I("get.page") : 1;
         cookie("prevUrl", "Admin/Shop/product/page/" . $p);
 
         $productList = D("Product")->getList(array(), array("menu", "file"), "id desc", $p, $num);
-        $this->assign('productList', $productList);// 赋值数据集
+        $this->assign('productList', $productList); // 赋值数据集
 
-        $count = D("Product")->getMethod(array(), "count");// 查询满足要求的总记录数
-        $Page = new \Think\Page($count, $num);// 实例化分页类 传入总记录数和每页显示的记录数
+        $count = D("Product")->getMethod(array(), "count"); // 查询满足要求的总记录数
+        $Page = new \Think\Page($count, $num); // 实例化分页类 传入总记录数和每页显示的记录数
         $Page->setConfig('theme', "<ul class='pagination no-margin pull-right'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</a></ul>");
-        $show = $Page->show();// 分页显示输出
+        $show = $Page->show(); // 分页显示输出
 
-        $this->assign('page', $show);// 赋值分页输出
+        $this->assign('page', $show); // 赋值分页输出
         $this->assign('url', "http://" . I("server.HTTP_HOST"));
         $this->display();
     }
 
-    public function addMenu()
-    {
+    public function addMenu() {
         if (IS_POST) {
             D("Menu")->add(I("post."));
 
@@ -43,8 +63,7 @@ class ShopController extends BaseController
         }
     }
 
-    public function modMenu()
-    {
+    public function modMenu() {
         $menu = D("Menu")->get(array("id" => I("get.id")), true);
         $this->assign("menu", $menu);
 
@@ -54,15 +73,13 @@ class ShopController extends BaseController
         $this->display("Shop:addMenu");
     }
 
-    public function delMenu()
-    {
+    public function delMenu() {
         D("Menu")->del(array("id" => array("in", I("get.id"))));
 
         $this->success("删除成功", "Admin/Shop/menu");
     }
 
-    public function addProduct()
-    {
+    public function addProduct() {
         if (IS_POST) {
             $data = I("post.");
             $data['detail'] = I("post.detail", '', '');
@@ -82,8 +99,7 @@ class ShopController extends BaseController
         }
     }
 
-    public function modProduct()
-    {
+    public function modProduct() {
         $product = D("Product")->get(array("id" => I("get.id")), array('menu', 'file'));
         $product["label"] = explode(",", $product["label"]);
 
@@ -100,8 +116,7 @@ class ShopController extends BaseController
         $this->display("Shop:addProduct");
     }
 
-    public function updateProduct()
-    {
+    public function updateProduct() {
         $data = I("get.");
         $data["id"] = array("in", $data["id"]);
         D("Product")->save($data);
@@ -109,34 +124,30 @@ class ShopController extends BaseController
         $this->success("保存成功", cookie("prevUrl"));
     }
 
-
-    public function delProduct()
-    {
+    public function delProduct() {
         D("Product")->del(array("id" => array("in", I("get.id"))));
 
         $this->success("删除成功", cookie("prevUrl"));
     }
 
-    public function ads()
-    {
+    public function ads() {
         $num = 25;
         $p = I("get.page") ? I("get.page") : 1;
         cookie("prevUrl", "Admin/Shop/ads/page/" . $p);
 
         $adsList = D("Ads")->getList(array(), true, "id desc", $p, $num);
-        $this->assign('ads', $adsList);// 赋值数据集
+        $this->assign('ads', $adsList); // 赋值数据集
 
-        $count = D("Ads")->getMethod(array(), "count");// 查询满足要求的总记录数
-        $Page = new \Think\Page($count, $num);// 实例化分页类 传入总记录数和每页显示的记录数
+        $count = D("Ads")->getMethod(array(), "count"); // 查询满足要求的总记录数
+        $Page = new \Think\Page($count, $num); // 实例化分页类 传入总记录数和每页显示的记录数
         $Page->setConfig('theme', "<ul class='pagination no-margin pull-right'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</a></ul>");
-        $show = $Page->show();// 分页显示输出
+        $show = $Page->show(); // 分页显示输出
 
-        $this->assign('page', $show);// 赋值分页输出
+        $this->assign('page', $show); // 赋值分页输出
         $this->display();
     }
 
-    public function addAds()
-    {
+    public function addAds() {
         if (IS_POST) {
             D("Ads")->add(I("post."));
 
@@ -146,23 +157,20 @@ class ShopController extends BaseController
         }
     }
 
-    public function modAds()
-    {
+    public function modAds() {
         $ads = D("Ads")->get(array("id" => I("get.id")), true);
         $this->assign("ads", $ads);
 
         $this->display("Shop:addAds");
     }
 
-    public function delAds()
-    {
+    public function delAds() {
         D("Ads")->del(array("id" => array("in", I("get.id"))));
 
         $this->success("删除成功", cookie("prevUrl"));
     }
 
-    public function comment()
-    {
+    public function comment() {
         $num = 25;
         $p = I("get.page") ? I("get.page") : 1;
         cookie("prevUrl", "Admin/Shop/comment/page/" . $p);
@@ -170,24 +178,22 @@ class ShopController extends BaseController
         $comment = D("Comment")->getList(array(), true, "id desc", $p, $num);
         $this->assign("comment", $comment);
 
-        $count = D("Comment")->getMethod(array(), "count");// 查询满足要求的总记录数
-        $Page = new \Think\Page($count, $num);// 实例化分页类 传入总记录数和每页显示的记录数
+        $count = D("Comment")->getMethod(array(), "count"); // 查询满足要求的总记录数
+        $Page = new \Think\Page($count, $num); // 实例化分页类 传入总记录数和每页显示的记录数
         $Page->setConfig('theme', "<ul class='pagination no-margin pull-right'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</a></ul>");
-        $show = $Page->show();// 分页显示输出
+        $show = $Page->show(); // 分页显示输出
 
-        $this->assign('page', $show);// 赋值分页输出
+        $this->assign('page', $show); // 赋值分页输出
         $this->display();
     }
 
-    public function delComment()
-    {
+    public function delComment() {
         D("Comment")->del(array("id" => array("in", I("get.id"))));
 
         $this->success("删除成功", cookie("prevUrl"));
     }
 
-    public function productSearch()
-    {
+    public function productSearch() {
         $condition = array();
         if (I("post.id")) {
             array_push($condition, array("id" => I("post.id")));
@@ -214,8 +220,7 @@ class ShopController extends BaseController
         $this->display("product");
     }
 
-    public function exportProduct()
-    {
+    public function exportProduct() {
         $product = D('Product')->getList(array(), true);
         foreach ($product as $key => $value) {
             unset($product[$key]["comment"]);
@@ -224,26 +229,24 @@ class ShopController extends BaseController
         \Excel::export($product);
     }
 
-    public function feedback()
-    {
+    public function feedback() {
         $num = 25;
         $p = I("get.page") ? I("get.page") : 1;
         cookie("prevUrl", "Admin/Shop/feedback/page/" . $p);
 
         $feedbackList = D("Feedback")->getList(array(), false, "id desc", $p, $num);
-        $this->assign('feedback', $feedbackList);// 赋值数据集
+        $this->assign('feedback', $feedbackList); // 赋值数据集
 
-        $count = D("Feedback")->getMethod(array(), "count");// 查询满足要求的总记录数
-        $Page = new \Think\Page($count, $num);// 实例化分页类 传入总记录数和每页显示的记录数
+        $count = D("Feedback")->getMethod(array(), "count"); // 查询满足要求的总记录数
+        $Page = new \Think\Page($count, $num); // 实例化分页类 传入总记录数和每页显示的记录数
         $Page->setConfig('theme', "<ul class='pagination no-margin pull-right'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</a></ul>");
-        $show = $Page->show();// 分页显示输出
+        $show = $Page->show(); // 分页显示输出
 
-        $this->assign('page', $show);// 赋值分页输出
+        $this->assign('page', $show); // 赋值分页输出
         $this->display();
     }
 
-    public function exportFeedback()
-    {
+    public function exportFeedback() {
         if (I("get.id")) {
             $feedback = D("Feedback")->getList(array("id" => array("in", I("get.id"))));
         } else {
@@ -254,23 +257,20 @@ class ShopController extends BaseController
         \Excel::export($feedback);
     }
 
-    public function label()
-    {
+    public function label() {
         $label = D("ProductLabel")->getList();
         $this->assign("label", $label);
         $this->display();
     }
 
-    public function modLabel()
-    {
+    public function modLabel() {
         $label = D("ProductLabel")->get(array("id" => I("get.id")), false);
         $this->assign("label", $label);
 
         $this->display("Shop:addLabel");
     }
 
-    public function addLabel()
-    {
+    public function addLabel() {
         if (IS_POST) {
             D("ProductLabel")->add(I("post."));
 
@@ -280,15 +280,13 @@ class ShopController extends BaseController
         }
     }
 
-    public function delLabel()
-    {
+    public function delLabel() {
         D("ProductLabel")->del(array("id" => array("in", I("get.id"))));
 
         $this->success("删除成功", "Admin/Shop/label");
     }
 
-    public function sku()
-    {
+    public function sku() {
         cookie("prevUrl", "Admin/Shop/sku/id/" . I("get.id"));
 
         $sku = D("ProductSku")->getList(array("product_id" => I("get.id")));
@@ -297,8 +295,7 @@ class ShopController extends BaseController
         $this->display();
     }
 
-    public function addSku()
-    {
+    public function addSku() {
         $new = I("post.new");
         $old = I("post.old");
 
@@ -316,8 +313,7 @@ class ShopController extends BaseController
         $this->success("操作成功", cookie("prevUrl"));
     }
 
-    public function delSku()
-    {
+    public function delSku() {
         D("ProductSku")->del(array("id" => I("get.id")));
 
         $this->success("删除成功", cookie("prevUrl"));
