@@ -5,7 +5,8 @@ class ShopController extends BaseController {
 
     public function shop() {
         $shops = M('shop')->select();
-        dump($shops);
+        $this->assign('shops', $shops);
+        $this->display();
     }
 
     public function addShop() {
