@@ -12,15 +12,15 @@
         <div class="col-md-12">
             <div class="box box-danger">
                 <div class="box-header with-border">
-                    <h3 class="box-title">餐厅管理</h3>
+                    <h3 class="box-title">菜单管理</h3>
                     <!-- /.box-tools -->
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body no-padding">
                     <div class="mailbox-controls">
                         <div class="btn-group">
-                            <a href="{:U('Admin/Shop/addShop')}" class="btn btn-danger ">
-                                新增餐厅
+                            <a href="{:U('Admin/Dish/addDish', array('shopId' => $shopId))}" class="btn btn-danger ">
+                                新增菜品
                             </a>
                         </div>
                         <!-- /.btn-group -->
@@ -33,7 +33,8 @@
                                     <label><input onchange="checkAll()" type="checkbox" value=""></label>
                                 </th>
                                 <th>ID</th>
-                                <th>名称</th>
+                                <th>菜品名</th>
+                                <th>价格</th>
                                 <!-- <th>介绍</th>
                                 <th>链接</th>
                                 <th>图片</th>
@@ -42,17 +43,20 @@
                                 <th>时间</th>
                                 <th>操作</th>
                             </tr>
-                            <volist name="shops" id="shop">
+                            <volist name="dishs" id="dish">
                                 <tr>
                                     <td class="hidden-xs">
                                         <label><input name="checkbox" class="check" type="checkbox"
-                                                      value="{$shop.id}"></label>
+                                                      value="{$dish.id}"></label>
                                     </td>
                                     <td>
-                                        {$shop.id}
+                                        {$dish.id}
                                     </td>
                                     <td>
-                                        {$shop.name}
+                                        {$dish.name}
+                                    </td>
+                                    <td>
+                                        {$dish.price}
                                     </td>
                                     <!-- <td>
                                         {$shop.sub}
@@ -77,16 +81,13 @@
                                         {$shop.remark}
                                     </td> -->
                                     <td>
-                                        {$shop.create_t}
+                                        {$dish.create_t}
                                     </td>
                                     <td class="table-action">
+                                      <!--       <a
+                                            href="{:U('Admin/Shop/modAds',array('id'=>$shop['id']))}">修改</a> -->
                                             <a
-                                            href="{:U('Admin/Dish/dishmenu',array('shopId'=>$shop['id']))}">菜单</a>
-                                            <a
-                                            href="{:U('Admin/Shop/book',array('shopId'=>$shop['id']))}">发起订餐</a>
-                                            <!-- <a
-                                            href="{:U('Admin/Shop/modAds',array('id'=>$shop['id']))}">修改</a><a
-                                            href="{:U('Admin/Shop/delAds',array('id'=>$shop['id']))}">删除</a> -->
+                                            href="{:U('Admin/Dish/delDish',array('id'=>$dish['id'], 'shopId' => $shopId))}">删除</a>
                                     </td>
                                 </tr>
                             </volist>
@@ -96,7 +97,7 @@
                             <div class="mailbox-controls">
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-danger"
-                                            onclick="batchUrl('{:U(\'Admin/Shop/delAds\')}')">全部删除
+                                            onclick="batchUrl('{:U(\'Admin/Dish/delDish\', array(\'shopId\' => $shopId))}')">全部删除
                                     </button>
                                 </div>
                                 <div class="pull-right">
